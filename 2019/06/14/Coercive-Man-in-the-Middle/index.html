@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Coercive Man-in-the-MiddleIn this report, we discuss the approaches we use to sniff the packet transfer between the bulb and the connected device without the knowledge of either of the two devices. We">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coercive Man-in-the-Middle">
+<meta property="og:url" content="http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/index.html">
+<meta property="og:site_name" content="Hand-On Security">
+<meta property="og:description" content="Coercive Man-in-the-MiddleIn this report, we discuss the approaches we use to sniff the packet transfer between the bulb and the connected device without the knowledge of either of the two devices. We">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start61.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start62.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start71.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start8.png">
+<meta property="og:updated_time" content="2019-06-14T03:23:30.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Coercive Man-in-the-Middle">
+<meta name="twitter:description" content="Coercive Man-in-the-MiddleIn this report, we discuss the approaches we use to sniff the packet transfer between the bulb and the connected device without the knowledge of either of the two devices. We">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Coercive Man-in-the-Middle</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&text=Coercive Man-in-the-Middle"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&is_video=false&description=Coercive Man-in-the-Middle"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Coercive Man-in-the-Middle&body=Check out this article: http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&name=Coercive Man-in-the-Middle&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Coercive-Man-in-the-Middle"><span class="toc-number">1.</span> <span class="toc-text">Coercive Man-in-the-Middle</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Man-in-the-Middle-Attacks"><span class="toc-number">1.1.</span> <span class="toc-text">Man-in-the-Middle Attacks</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Components"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">Components</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Working"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">Working</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sniffing"><span class="toc-number">1.2.</span> <span class="toc-text">Sniffing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HackRF"><span class="toc-number">1.3.</span> <span class="toc-text">HackRF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Exploring-BLE-–-from-software-to-radio-signals-and-back"><span class="toc-number">1.3.1.</span> <span class="toc-text">Exploring BLE – from software to radio signals and back.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BTLE-packet-sniffer-scanner-btle-rx"><span class="toc-number">1.3.2.</span> <span class="toc-text">BTLE packet sniffer/scanner btle_rx</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Final-Attack"><span class="toc-number">1.4.</span> <span class="toc-text">Final Attack</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Coercive Man-in-the-Middle
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Hand-On Security</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-06-14T02:43:04.000Z" itemprop="datePublished">2019-06-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Coercive-Man-in-the-Middle"><a href="#Coercive-Man-in-the-Middle" class="headerlink" title="Coercive Man-in-the-Middle"></a>Coercive Man-in-the-Middle</h1><p>In this report, we discuss the approaches we use to sniff the packet transfer between the bulb and the connected device without the knowledge of either of the two devices. We focus on a couple of methods which all works with the same principle of Man-in-the-Middle wherein a third party gain access to the data transferred between a connection between two devices by emulating one of the devices participating in the connection.</p>
+<h2 id="Man-in-the-Middle-Attacks"><a href="#Man-in-the-Middle-Attacks" class="headerlink" title="Man-in-the-Middle Attacks"></a>Man-in-the-Middle Attacks</h2><h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>Man-in-the-Middle is the approach we will be discussing first. As the name suggests this method involves the third device apart from the two connecting devices in a BLE Connection which emulates one of the devices, thus virtually taking control of the data transfer between the two devices. While in most cases the attack is done before a successful connection is established, here we perform the attack after a successful connection is established between both the devices. </p>
+<p>Ever since BLE has been proven insecure against eavesdropping a lot of open-source MitM architectures such as Gattacker and BTLEJuice were created. attackers do not need to trick users into performing an action to compromise or infect them, nor does a target device’s Bluetooth have to pair with an attack device or even be in Discovery Mode. The device simply has to have its Bluetooth feature turned on, which for most products is the default setting.</p>
+<h4 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h4><p>The main components used in this attack include an Ubertooth One, to capture and transmit data packets; an SDR to transmit RF of a specific frequency to create interference in the connection, a Linux system and also a Raspberry Pi. In this setup, the Raspberry Pi becomes the Master device and the Linux system becomes the Slave device. After scanning the type of chipset being used in the IoT device we are able to find the frequency range of data transmission, thus we can emit RF of the required frequency to break the connection after which we use the Ubertooth to capture the packets that are being advertised and use it to emulate the device using the Slave device. The Master device, on the other hand, starts sending advertisements in large magnitudes to ensure that the devices connect with the Slave device.</p>
+<h4 id="Working"><a href="#Working" class="headerlink" title="Working"></a>Working</h4><p>The attack works by emulating the device to be sniffed; in this case the Smart Bulb, by sending the same Advertising packets sent by the original device using the Master device; which is the RaspPi. Before this for getting the advertisement packets, we need to break the already existing connection, since advertising stops the moment a connection is established between two devices. For this, we use the SDR to emit RF waves of required frequency to break the connection. We then capture the advertising packets and then emit them through the RaspPi thus emulating the original device, thus once a connection is established we spoof the device network thus gaining access to the transferred data packets.</p>
+<blockquote>
+<p>Disclaimer: This method, however, is quite ineffective when there is hardware level encryption, in which case the MitM would be difficult since capturing and transmitting the encrypted advertised packets is ineffective.</p>
+</blockquote>
+<p><strong>1.</strong> <em>First we need to set up the slave device. We use <code>docker</code>, to host the slave device after which. A VM can also be used instead of <code>docker</code>, but <code>docker</code> is much practical for test purposes since VM would require a seperate Bluetooth adapter to set up. In VM’s defence it is much more secure compared to <code>docker</code> but <code>docker</code> wins when it comes to ease of set up and would work with the default Bluetooth adapter present in the Laptop system. We start up the slave device by launching:</em></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo node ws-slave.js</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start1.png" alt="Alt text"></p>
+<p><strong>2.</strong> <em>Get</em> <code>ssh</code> <em>access to your RaspPi:</em></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@[Deviceaddr]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start2.png" alt="Alt text"></p>
+<p><em>As mentioned before the RaspPi will be the Master device in this setup. In the setup we had already set up Gattacker and the necessary packages required.</em></p>
+<p><strong>3.</strong> <em>Next we set up the variables for Gattacker</em> <code>config.env</code> <em>file.</em></p>
+<ul>
+<li>NOBLE_HCI_DEVICE_ID : </li>
+<li>BLENO_HCI_DEVICE_ID : </li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start3.png" alt="Alt text"></p>
+<p>They would be given as ‘0’ if we use the default Bluetooth adapter but if we use a seperate BT adapter we give it other numeric values depending on the number of adapters used.</p>
+<p><strong>4.</strong> <em>Now in the master device we access the Gattacker folder and run this command:</em></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo node scan.js</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start4.png" alt="Alt text"></p>
+<p><em>Here the advertisement packets are captured and saved in a file.</em><br><em>Now to save the service we run the command:</em></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo node scan f81d78632b93</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start61.png" alt="Alt text"></p>
+<p><em>Here the scan parameter is the name of the bulb as saved in Gattacker. The captured services and the advertisements are automatically updated in the slave devices so the emulation of the bulb is completed as shown below:</em><br><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start62.png" alt="Alt text"></p>
+<p><strong>5.</strong> <em>Next we clone the MAC address of the original device along with the additional parameters as shown:</em></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mac_adv -a devices/f81d78632b93_LEDBLE-78632b93.adv.json -s devices/f81d78632b93.srv.json</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start71.png" alt="Alt text"></p>
+<p><em>Now the RaspPi starts snuffing packets transferred between the devices and thus the packets will be captured by the RaspPi as shown in the image below:</em><br><img src="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start8.png" alt="Alt text"></p>
+<p><em>The packets shown here controls RGB values of the bulb and determines the colour of the bulb. Changes in these packets would change the colour of the bulb.</em></p>
+<p>Now we will look into how we use Ubertooth to sniff the transferred data between the connected devices.</p>
+<h2 id="Sniffing"><a href="#Sniffing" class="headerlink" title="Sniffing"></a>Sniffing</h2><p>To understand how the connection between Bluetooth devices work we use a process called sniffing to get the details of the target device. Linux contains basic Bluetooth analysis tools. We tried using <strong>hcidump</strong> which is one of these tools.<br><br><strong>hcidump</strong> can be used to read raw data coming from and going to a Bluetooth device and print it in human readable form.<br><br>Syntax is:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hcidump [option [option...]] [filter]</span><br></pre></td></tr></table></figure>
+
+<p>But the data we get from this very limited and its quite hard to get a proper analysis from this data.<br><br>So to get a better idea about the connection and how it works we need to use we need to use more specific hardware.<br><br>We are using <strong>Ubertooth One</strong> by <strong>Great Scott Gadgets</strong>, it is an open source 2.4 GHz wireless development tool for Bluetooth experimentation. Ubertooth can be used to sniff Bluetooth packets even when the devices are in connected state. When paired with <strong>Wireshark</strong> we can analyse the data passing through two connected devices.<br><br>Ubertooth can follow a particular connection using the command :</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ubertooth-btle -fI -c ble_dump.pcap</span><br></pre></td></tr></table></figure>
+
+<p>Here the <code>-fI</code> is used to follow and interfere with a particular device. Without the <code>I</code> ubertooth will not interfere and we won’t be able to get the data when the device is in connected state.<br><br>Furthermore, we can target a specific device by specifying the address of the target device :</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ubertooth-btle -fI -t&lt;BD_ADDR&gt; -c ble_dump.pcap</span><br></pre></td></tr></table></figure>
+
+<p>There are different tools which we can use to find the address of our target device. We have used <a href="https://github.com/pwnieexpress/blue_hydra" target="_blank" rel="noopener">blue hydra</a> which is a Bluetooth device discovery tool built on top of the <code>bluez</code> library. It can be linked with Ubertooth to track both classic and LE Bluetooth devices.<br><br>For an active traffic interception of the data transferred by our target device, we can create a pipe by using the command <code>mkfifo /tmp/pipe</code> and then using it in Wireshark as the capture interface.</p>
+<p>During sniffing we get the following important details : </p>
+<ul>
+<li>Access address(AA) is a unique value set up during connection and it is used to manage the link layer</li>
+<li>When in advertising state,<ul>
+<li>The channels used are 37, 38 and 39 </li>
+<li>Advertisement PDUs(<code>ADV_IND</code> which is used to send connectable undirected advertisement) are sent through these advertising channels.</li>
+<li>The device advertises its Bluetooth address as <strong>AdvA</strong>(Advertisement address)</li>
+</ul>
+</li>
+<li>Three packets are sent between two devices before the connection between them sets up:<ul>
+<li><strong>SCAN_REQ</strong>: It is a packet sent by the master device to the broadcasting device requesting for a connection</li>
+<li><strong>SCAN_RSP</strong>: It is a packet sent by the slave device to the master device responding to the scan request.</li>
+<li><strong>CONNECT_REQ</strong>: This packet is issued by the master device and sent to the broadcasting device requesting a connection. If this request is accepted the connection sets up and a new access address is set for this connection.</li>
+</ul>
+</li>
+<li>Once the connection is set up the channels used changes from Advertising channel(37-39) to Data channels(0-36).</li>
+</ul>
+<p>When in data connection, the channel through which data transfers are continuously changing and this process is called Adaptive Frequency Hopping(AFH). A frequency hopping algorithm is used to cycle through the 37 data channels:<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fn + 1 = (fn + hop)mod37</span><br></pre></td></tr></table></figure></p>
+<p>Where <strong>f<sub>n+1</sub></strong> is the channel to be used in the next connection event, and hop is a value between 5 and 16 and is set up during the connection. The value which is set for hop can be seen in the <strong>CONNECT_REQ</strong> packet.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">systime=1540911540 freq=2402 addr=8e89bed6 delta_t=0.368 ms rssi=-39</span><br><span class="line">45 22 27 69 57 fc 3f 54 93 0e 63 78 1d f8 d1 02 c5 d6 65 a4 84 02 24 00 27 00 00 00 d0 07 00 fe ff 00 1e a6 d7 26 ad </span><br><span class="line">Advertising / AA 8e89bed6 (valid)/ 34 bytes</span><br><span class="line">    Channel Index: 37</span><br><span class="line">    Type:  CONNECT_REQ</span><br><span class="line">    InitA: 54:3f:fc:57:69:27 (random)</span><br><span class="line">    AdvA:  f8:1d:78:63:0e:93 (public)</span><br><span class="line">    AA:    d6c502d1</span><br><span class="line">    CRCInit: 84a465</span><br><span class="line">    WinSize: 02 (2)</span><br><span class="line">    WinOffset: 0024 (36)</span><br><span class="line">    Interval: 0027 (39)</span><br><span class="line">    Latency: 0000 (0)</span><br><span class="line">    Timeout: 07d0 (2000)</span><br><span class="line">    ChM: 00 fe ff 00 1e</span><br><span class="line">    Hop: 6</span><br><span class="line">    SCA: 5, 31 ppm to 50 ppm</span><br><span class="line"></span><br><span class="line">    Data:  27 69 57 fc 3f 54 93 0e 63 78 1d f8 d1 02 c5 d6 65 a4 84 02 24 00 27 00 00 00 d0 07 00 fe ff 00 1e a6</span><br><span class="line">    CRC:   d7 26 ad</span><br></pre></td></tr></table></figure>
+
+<p>With all the data we obtained from sniffing we can move on to the next stage of our attack</p>
+<h2 id="HackRF"><a href="#HackRF" class="headerlink" title="HackRF"></a>HackRF</h2><p><strong>HackRF One</strong> from Great Scott Gadgets is a Software Defined Radio peripheral capable of transmission or reception of radio signals from 1 MHz to 6 GHz. Designed to enable test and development of modern and next-generation radio technologies, HackRF One is an open source hardware platform that can be used as a USB peripheral or programmed for stand-alone operation.</p>
+<h3 id="Exploring-BLE-–-from-software-to-radio-signals-and-back"><a href="#Exploring-BLE-–-from-software-to-radio-signals-and-back" class="headerlink" title="Exploring BLE – from software to radio signals and back."></a>Exploring BLE – from software to radio signals and back.</h3><p>Armed with the frequency range only and no other information we decided to see if we can just blindly capture and replay a transmissions raw form to perform actions without the legitimate transmitters.<br>BTLE has 40 channels with the following frequencies :</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Channel 37: 2.402000000 GHz</span><br><span class="line">Channel 00: 2.404000000 GHz</span><br><span class="line">Channel 01: 2.406000000 GHz</span><br><span class="line">Channel 02: 2.408000000 GHz</span><br><span class="line">:</span><br><span class="line">:</span><br><span class="line">Channel 10: 2.424000000 GHz</span><br><span class="line">Channel 38: 2.426000000 GHz</span><br><span class="line">Channel 11: 2.428000000 GHz</span><br><span class="line">:</span><br><span class="line">:</span><br><span class="line">Channel 36: 2.478000000 GHz</span><br><span class="line">Channel 39: 2.480000000 GHz</span><br></pre></td></tr></table></figure>
+
+<p>To break the existing connection between the central and peripheral devices we decided to brute force all the channels by sending  20 millions samples of raw I/Q. The term “I/Q” is an abbreviation for “in-phase” and “quadrature”.I/Q signalling refers to the use of two sinusoids that have the same frequency and a relative phase shift of 90°. Transmitter induced I/Q imbalance occurs when the modulator’s in-phase and quadrature components are not orthogonal. This causes the real and imaginary components of the complex signal to interfere with each other. But apart from the process being quite slow the raw data does not break the established connection.</p>
+<p>Then we tried to brute-force a single channel by replay transmissions in raw form which also resulted in failure as the probability of transmission through a particular channel is less, the method seemed out of practical implementation.</p>
+<p>The next method was to transmit packets instead of raw I/Q. So we started transmitting the <code>TERMINATE</code> packet through a single channel which closes the established connection. Transmitting collision situations can occur when the transmitted <code>TERMINATE</code> packet and the packet sent by the central device collide with each other, In this situation, the master shall reject the slave-initiated procedure. But the probability is still low due to randomization of the frequency channel.</p>
+<p>In the next method, we use Ubertooth to sniff the packet transferred between the connection and thus gaining the access address. We then transmit the <code>TERMINATE</code> packet through the channel at the access address, to terminate the connection between the device and controller.</p>
+<h3 id="BTLE-packet-sniffer-scanner-btle-rx"><a href="#BTLE-packet-sniffer-scanner-btle-rx" class="headerlink" title="BTLE packet sniffer/scanner btle_rx"></a>BTLE packet sniffer/scanner btle_rx</h3><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">btle_rx -c chan -g gain -a access_addr -k crc_init -v -r</span><br></pre></td></tr></table></figure>
+
+<p><code>chan</code>: Channel number.</p>
+<p><code>gain</code>: VGA gain. default value 6. valid value 0~62.</p>
+<p><code>access_addr</code>: Access address.</p>
+<p><code>crc_init</code>: Captured from the Ubertooth Dump.</p>
+<p><code>-v</code>: Verbose mode. Print more information when there is an error</p>
+<p><em>To support fast/realtime transmission , we also changed</em></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">lib_device-&gt;</span><span class="bash">transfer_count to 4</span></span><br><span class="line"><span class="meta">lib_device-&gt;</span><span class="bash">buffer_size to 4096</span></span><br></pre></td></tr></table></figure>
+
+<p>in hackrf driver: src/hackrf.c, then and re-compile, re-install as instructed in <a href="https://github.com/mossmann/hackrf" target="_blank" rel="noopener">hackrf</a>.</p>
+<h2 id="Final-Attack"><a href="#Final-Attack" class="headerlink" title="Final Attack"></a>Final Attack</h2><p>We finally combine all of the above methods to create a <em>single</em> attack.We use the data obtained from sniffing via the Ubertooth (Access Address, CRC Init), and then using the HackRF transmit the packets to terminate the connection and allowing us to perform the MiTM to covertly sniff the data without both the ends knowing the connection has terminated, we have here assumed that the users wouldn’t be able to immediately detect a termination in the connection as we immediately start with the MiTM attack.  </p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Coercive-Man-in-the-Middle"><span class="toc-number">1.</span> <span class="toc-text">Coercive Man-in-the-Middle</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Man-in-the-Middle-Attacks"><span class="toc-number">1.1.</span> <span class="toc-text">Man-in-the-Middle Attacks</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Components"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">Components</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Working"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">Working</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sniffing"><span class="toc-number">1.2.</span> <span class="toc-text">Sniffing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HackRF"><span class="toc-number">1.3.</span> <span class="toc-text">HackRF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Exploring-BLE-–-from-software-to-radio-signals-and-back"><span class="toc-number">1.3.1.</span> <span class="toc-text">Exploring BLE – from software to radio signals and back.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BTLE-packet-sniffer-scanner-btle-rx"><span class="toc-number">1.3.2.</span> <span class="toc-text">BTLE packet sniffer/scanner btle_rx</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Final-Attack"><span class="toc-number">1.4.</span> <span class="toc-text">Final Attack</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&text=Coercive Man-in-the-Middle"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&is_video=false&description=Coercive Man-in-the-Middle"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Coercive Man-in-the-Middle&body=Check out this article: http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/06/14/Coercive-Man-in-the-Middle/&name=Coercive Man-in-the-Middle&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Season Cherian
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
