@@ -1,0 +1,12 @@
+[
+    {
+       "name":"multiarch",
+       "url":"https://github.com/s34s0n/multiarch",
+       "desc":"Get a quick start in reversing binaries made in obscure archs such as avr mips etc "
+    },
+    {
+       "name":"CSAW_ESC_18",
+       "url":"https://github.com/s34s0n/CSAW_ESC_18",
+       "desc":"The repo containing all the research works done for the CSAW Challenge '18 "
+    }
+] 
