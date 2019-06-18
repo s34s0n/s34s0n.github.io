@@ -3,10 +3,10 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hand-On Security
-subtitle:
-description:
-keywords:
+title: HandsOn Security
+subtitle: Crafting Vulnerabilies for fun and CTF points
+description: This is a fucking desc, that is very long
+keywords: Keywords, Security, Hardware, CTF, Writeups, 2019
 author: Season Cherian
 language:
 timezone:
