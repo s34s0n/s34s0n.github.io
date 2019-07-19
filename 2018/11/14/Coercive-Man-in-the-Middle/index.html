@@ -7,10 +7,10 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="Coercive Man-in-the-MiddleIn this report, we discuss the approaches we use to sniff the packet transfer between the bulb and the connected device without the knowledge of either of the two devices. We">
-<meta name="keywords" content="BLE,CSAW,MiTM,HackRF,Ubertooth,Gattacker">
+<meta name="keywords" content="HackRF,BLE,CSAW,MiTM,Ubertooth,Gattacker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Coercive Man-in-the-Middle">
-<meta property="og:url" content="https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/index.html">
+<meta property="og:url" content="https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/index.html">
 <meta property="og:site_name" content="HandsOn Security">
 <meta property="og:description" content="Coercive Man-in-the-MiddleIn this report, we discuss the approaches we use to sniff the packet transfer between the bulb and the connected device without the knowledge of either of the two devices. We">
 <meta property="og:locale" content="default">
@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start62.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start71.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/CSAW_ESC_18/master/Blog/Photos/Start8.png">
-<meta property="og:updated_time" content="2019-06-19T06:08:48.167Z">
+<meta property="og:updated_time" content="2019-07-17T23:38:54.774Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Coercive Man-in-the-Middle">
 <meta name="twitter:description" content="Coercive Man-in-the-MiddleIn this report, we discuss the approaches we use to sniff the packet transfer between the bulb and the connected device without the knowledge of either of the two devices. We">
@@ -96,16 +96,16 @@
     <br>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&text=Coercive Man-in-the-Middle"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&is_video=false&description=Coercive Man-in-the-Middle"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Coercive Man-in-the-Middle&body=Check out this article: https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&name=Coercive Man-in-the-Middle&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&text=Coercive Man-in-the-Middle"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&is_video=false&description=Coercive Man-in-the-Middle"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Coercive Man-in-the-Middle&body=Check out this article: https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&name=Coercive Man-in-the-Middle&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -134,7 +134,7 @@
       
     <div class="postdate">
       
-        <time datetime="2019-06-14T02:43:04.000Z" itemprop="datePublished">2019-06-14</time>
+        <time datetime="2018-11-14T02:43:04.000Z" itemprop="datePublished">2018-11-14</time>
         
       
     </div>
@@ -287,16 +287,16 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&text=Coercive Man-in-the-Middle"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&is_video=false&description=Coercive Man-in-the-Middle"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Coercive Man-in-the-Middle&body=Check out this article: https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/06/14/Coercive-Man-in-the-Middle/&name=Coercive Man-in-the-Middle&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&text=Coercive Man-in-the-Middle"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&is_video=false&description=Coercive Man-in-the-Middle"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Coercive Man-in-the-Middle&body=Check out this article: https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&title=Coercive Man-in-the-Middle"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2018/11/14/Coercive-Man-in-the-Middle/&name=Coercive Man-in-the-Middle&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>

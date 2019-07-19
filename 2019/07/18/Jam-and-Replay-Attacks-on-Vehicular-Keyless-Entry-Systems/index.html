@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Bypassing Rolling Code SystemsJust to be clear, I worked on this project because I was interested in learning the basics of radio and how data is modulated... Overview of Jam and Replay AttackThe atta">
+<meta name="keywords" content="Hardware Hack,Radio,SDR,HackRF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jam and Replay Attacks on Vehicular Keyless Entry Systems">
+<meta property="og:url" content="https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/index.html">
+<meta property="og:site_name" content="HandsOn Security">
+<meta property="og:description" content="Bypassing Rolling Code SystemsJust to be clear, I worked on this project because I was interested in learning the basics of radio and how data is modulated... Overview of Jam and Replay AttackThe atta">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c2.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c10.gif">
+<meta property="og:updated_time" content="2019-07-19T02:01:28.840Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jam and Replay Attacks on Vehicular Keyless Entry Systems">
+<meta name="twitter:description" content="Bypassing Rolling Code SystemsJust to be clear, I worked on this project because I was interested in learning the basics of radio and how data is modulated... Overview of Jam and Replay AttackThe atta">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Jam and Replay Attacks on Vehicular Keyless Entry Systems</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/07/10/TempestSDR/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&text=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&is_video=false&description=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Jam and Replay Attacks on Vehicular Keyless Entry Systems&body=Check out this article: https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&name=Jam and Replay Attacks on Vehicular Keyless Entry Systems&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Bypassing-Rolling-Code-Systems"><span class="toc-number">1.</span> <span class="toc-text">Bypassing Rolling Code Systems</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Overview-of-Jam-and-Replay-Attack"><span class="toc-number">1.1.</span> <span class="toc-text">Overview of Jam and Replay Attack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Keyless-Entry-Systems"><span class="toc-number">1.2.</span> <span class="toc-text">Keyless Entry Systems</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Intro-to-RF-Hardware-amp-Software"><span class="toc-number">1.3.</span> <span class="toc-text">Quick Intro to RF Hardware &amp; Software</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Proof-of-Concept-device"><span class="toc-number">1.3.1.</span> <span class="toc-text">Proof-of-Concept device</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Initial-Reconnaissance"><span class="toc-number">1.4.</span> <span class="toc-text">Initial Reconnaissance</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Receiving-The-Signal"><span class="toc-number">1.4.1.</span> <span class="toc-text">Receiving The Signal</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Automated-Decoding"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">Automated Decoding</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-Rolling-Code-Work"><span class="toc-number">1.4.2.</span> <span class="toc-text">How Rolling Code Work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-do-we-attack-rolling-codes"><span class="toc-number">1.4.3.</span> <span class="toc-text">How do we attack rolling codes?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Executing-The-Attack"><span class="toc-number">1.5.</span> <span class="toc-text">Executing The Attack</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jam-and-Replay-Hardware"><span class="toc-number">1.5.1.</span> <span class="toc-text">Jam and Replay Hardware</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jamming-Signal"><span class="toc-number">1.5.2.</span> <span class="toc-text">Jamming Signal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Replaying-Signal"><span class="toc-number">1.5.3.</span> <span class="toc-text">Replaying Signal</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Jam and Replay Attacks on Vehicular Keyless Entry Systems
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">HandsOn Security</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-07-18T08:53:44.000Z" itemprop="datePublished">2019-07-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/research/">research</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/HackRF/">HackRF</a>, <a class="tag-link" href="/tags/Hardware-Hack/">Hardware Hack</a>, <a class="tag-link" href="/tags/Radio/">Radio</a>, <a class="tag-link" href="/tags/SDR/">SDR</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Bypassing-Rolling-Code-Systems"><a href="#Bypassing-Rolling-Code-Systems" class="headerlink" title="Bypassing Rolling Code Systems"></a>Bypassing Rolling Code Systems</h1><p><code>Just to be clear, I worked on this project because I was interested in learning the basics of radio and how data is modulated...</code></p>
+<h2 id="Overview-of-Jam-and-Replay-Attack"><a href="#Overview-of-Jam-and-Replay-Attack" class="headerlink" title="Overview of Jam and Replay Attack"></a>Overview of Jam and Replay Attack</h2><p>The attacker appropriates a device with simultaneous transmit and receive capabilities to produce a jamming signal, to restrict the car from receiving the validation code from the key fob. This is possible as Remote Keyless Entries are often intended with a receive band that is wider than the bandwidth of the key fob signal. The device simultaneously intercepts the rolling code by using a tighter receive band, and stores it for later use. When the user presses the key fob again, the device captures the second code and transmits the first code, so that the user’s required action is performed. This results in the attacker possessing the next valid rolling code, granting them access to the vehicle. The process can be repeated frequently by placing the device in the proximity of the car. Note that if the user unlocks the car using the mechanical key after the first try, the second code capture is not required, and the first code can be used to unlock the vehicle.</p>
+<p>In this demonstrating I had used the HackRF to initially find the frequency that the key fob of Maruti Suzuki WagonR operates at and to analyze the signal and determine some of its properties. Then uses a Raspberry Pi running RPiTX to generate a jamming signal, and the HackRF to capture and replay the car keyfob signal.</p>
+<h2 id="Keyless-Entry-Systems"><a href="#Keyless-Entry-Systems" class="headerlink" title="Keyless Entry Systems"></a>Keyless Entry Systems</h2><p><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c1.png" alt="Key Fob"><br><em>Figure 1: Key Fob</em></p>
+<p>A remote keyless entry system simply refers to any electronic lock that functions without the use of a mechanical key. Commonly, this comes in the form of a key fob, with buttons that communicate using radio frequency (RF) signals with a receiver to perform a certain action, such as locking or unlocking a vehicle.</p>
+<p>In this demonstration, The key fob was using a one-way RKE requires a manual button press to activate. The vehicle receives the signal and confirms that it is a valid code, then performs the required action. With a rolling code system, a cryptographically secure pseudorandom number generator (PRNG), installed in the vehicle and the key fob, is used to periodically change the required code after a keypress, usually with a buffer to account for accidental out-of-range button presses.</p>
+<h2 id="Quick-Intro-to-RF-Hardware-amp-Software"><a href="#Quick-Intro-to-RF-Hardware-amp-Software" class="headerlink" title="Quick Intro to RF Hardware &amp; Software"></a>Quick Intro to RF Hardware &amp; Software</h2><h3 id="Proof-of-Concept-device"><a href="#Proof-of-Concept-device" class="headerlink" title="Proof-of-Concept device"></a>Proof-of-Concept device</h3><p>Several new technologies have made RF security testing simpler and more affordable for hobbyists and researchers, the most important development being the software-defined radio.</p>
+<p><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c2.jpg" alt="Software Defined Radio"></p>
+<p>*Figure 2: HackRF used to analyze signal *</p>
+<p>Software-Defined radio is a radio system where components traditionally implemented in hardware, such as filters and demodulators, are instead implemented in software. The setup typically involves an RF front end and an analog-to-digital converter, connected to a computer via USB. The computer performs complex tasks, such as demodulation, which refers to extracting the original signal from a carrier wave. </p>
+<p>Besides, advances in computing hardware and software have allowed for complex signal analysis using graphical flow graph software, such as GNURadio, capable of manipulating, decoding and encoding data for use with software-defined radios. Another important development is the popular Raspberry Pi single-board computer, which offers a full Linux operating system running on a 900Mhz quad-core processor, 4 USB ports, display outputs and 40 general-purpose input-output (GPIO) pins, which provides an easy-to-use, affordable testing base for the experimental jam and replay attack outlined below.</p>
+<h2 id="Initial-Reconnaissance"><a href="#Initial-Reconnaissance" class="headerlink" title="Initial Reconnaissance"></a>Initial Reconnaissance</h2><p>The first step in reverse engineering the key fob was to determine its operating frequency. Hence, the HackRF was utilized. The method for finding the operating frequency is to repeatedly press the key fob until a signal became visible on the fast Fourier transform (FFT) plot, which displays a live view of the RF spectrum. The horizontal axis represents frequency in megahertz and the vertical axis the amplitude in decibels relative to full scale (dBFS). A waterfall plot is shown in the bottom half, which plots the FFT over time, with the colors representing signal amplitude (blue to red, in increasing signal strength).</p>
+<p><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c3.png" alt="GQRX"><br>*Figure 3: FFT plot of frequency versus signal strength showing key fob signal at 433.92MHz *</p>
+<p>As seen in Figure 3, there is a peak at 433.878MHz, with the entire signal centered at 433.92MHz.  However, the FFT plot does not provide information regarding how the data is encoded.</p>
+<h3 id="Receiving-The-Signal"><a href="#Receiving-The-Signal" class="headerlink" title="Receiving The Signal"></a>Receiving The Signal</h3><p>For this attack, I used a HackRF for receiving any data. I used a GNURadio flow graph with the HackRF to receive and decode the keyfob data.</p>
+<p>This the GNURadio flow graph:<br><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c4.png" alt="grc file"><br>*Figure 4: GNURadio flow graph for capturing the signal *
+Things to note in the flow graph:<br>    - Set the sample rate to 2M which is the lowest sample rate recommended when using HackRF<br>    - osmocom source block<br>        - Frequency  –&gt; 433.92MHz<br>        - RF gain         –&gt; 0<br>        - IF gain           –&gt; 16</p>
+<p>The output is simply raw data, that is then processed by <code>xxd</code> to obtain hex values for every piece of the data.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xxd "saved_file" | less</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c5.png" alt="hexdump"><br><em>Figure 5: Hex dump</em></p>
+<p>The hex dump will be printing out lots of redundant information in his file. The reason behind the pattern which we see 4 bytes long is because what we are saving is the complex data type and that is a pair of floats. So what we are seeing is here is one floating-point for <code>i</code> and <code>q</code> (Complex Number). It is a 64-bit sample for one quadrature sample.  There is a limited number of values we because these have been converted from 8 bit signed integer to 32-bit floats. </p>
+<p>If we use a different tool like <code>od</code> tool with floating-point enabled it will dump out the floating-point.<br>    - w8 is used for interpreting 8 bits at a time</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">od -f -w8 "saved_file" |  less</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c6.png" alt="od"><br><em>Figure 6</em></p>
+<h4 id="Automated-Decoding"><a href="#Automated-Decoding" class="headerlink" title="Automated Decoding"></a>Automated Decoding</h4><p>To further analyze the signal, a Debian setup was utilized, and the gqrx SDR receiver software used to record the key fob I/Q data. The data was passed to inspectrum, an open-source waveform analysis tool. A screenshot of the beginning of the signal is shown in Figure 6.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inspectrum -r 2e6 &quot;saved_file&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c7.png" alt="inspectrum"><br><em>Figure 7</em><br>Analyzing through the spectrum it is clear that the signal is using ON/OFF Keying. The key fob is using a rolling code signal, which is repeated twice, divided by a gap, seen in Figure 7. At first guess, the signal appears to be Manchester encoded, which means every bit (zero or one) is either encoded as high then low or low then high, for the same period.</p>
+<h3 id="How-Rolling-Code-Work"><a href="#How-Rolling-Code-Work" class="headerlink" title="How Rolling Code Work"></a>How Rolling Code Work</h3><p>Most car manufacturers nowadays practice a keyless entry system called rolling codes. This was put into place to counter replay attacks, in which the attacker captures the unlock signal produced by the keyfob, and replays it to the car later.<br>The way this was done was by making the devices have a synchronized starting code that was sent and an algorithm that determined the following code to be sent next so that the same code was never repeated.<br>The implementation of this is that both the car and the remote are synced to an initial number (A PRNG’d seed). This is usually called “pairing” a remote and relies on some configuration of the device such as pressing a button or using a ‘master’ key.<br>Once the remote and device are synchronized they use an algorithm to take that initial number (x) and then transform it to the next number in the sequence (x+1). The subsequent keypress will take the result of the prior keypress as the input.<br>The devices store the next code that needs to be transmitted to validate it and also store a “list” of them (approximately 255).  This “list” is created to prevent the devices to not go out of sync, even if the user accidentally pressed it inside your house before walking over to your car.<br>To keep sync as soon as a valid button keypress is received, the “list” is updated to be x iterations from that keypress.<br>This also implies that all rolling code systems will suffer from a denial of service situation where if the button is pressed too many times without it being received from the device the buttons lose sync and will stop working.</p>
+<h3 id="How-do-we-attack-rolling-codes"><a href="#How-do-we-attack-rolling-codes" class="headerlink" title="How do we attack rolling codes?"></a>How do we attack rolling codes?</h3><p>Rolling code systems are vulnerable to several attacks that have been presented over the years. A number of these are attacks on the hardware itself through things like power analysis to determine the seed number or maths algorithm used. One example is the <a href="https://en.wikipedia.org/wiki/KeeLoq#Side-channel_attacks" target="_blank" rel="noopener">side channel attacks </a></p>
+<p>I will only look at the basic attacks that are against the radio transmissions rather than the hardware. This makes these a lot easier to implement as the hardware and software requirements are a lot lower. </p>
+<h2 id="Executing-The-Attack"><a href="#Executing-The-Attack" class="headerlink" title="Executing The Attack"></a>Executing The Attack</h2><h3 id="Jam-and-Replay-Hardware"><a href="#Jam-and-Replay-Hardware" class="headerlink" title="Jam and Replay Hardware"></a>Jam and Replay Hardware</h3><p>To simplify the system, a HackRF transceiver was used, that is capable of receiving and transmitting in various industrial, scientific and medical (ISM) unlicensed bands, including 433MHz, with wide support for modulations such as FSK, ASK (amplitude-shift keying) and OOK (on-off keying).  Further settings such as the modem modulation, frequency deviation, data rate (calculated using inspectrum), channel bandwidth, and packet sync mode were configured to match the key fob’s characteristics.</p>
+<h3 id="Jamming-Signal"><a href="#Jamming-Signal" class="headerlink" title="Jamming Signal"></a>Jamming Signal</h3><p>To create the jamming signal, the open-source <code>rpitx</code> software was utilized, which is capable of transmitting RF signals via the Raspberry Pi’s GPIO pins. Specifically, the variable-frequency oscillator (VFO) mode was used, as it offers “precise frequency resolution”. A carrier signal was transmitted at 433.850MHz, slightly below the operating frequency of the key fob, however within the automobile’s receive bandwidth. </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./rpitx –m VFO –f 433850</span><br></pre></td></tr></table></figure>
+
+<h3 id="Replaying-Signal"><a href="#Replaying-Signal" class="headerlink" title="Replaying Signal"></a>Replaying Signal</h3><p>First, we could try sending the captured signal to osmocom sink (take input from the source file and deliver it to HackRF for transmitting.)<br>This the GNURadio flow graph:<br><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c8.png" alt="flow graph"><br>*Figure 8: GNURadio flow graph for replaying the signal *
+<code>we use a throttle block since we don&#39;t want to crush the CPU.</code></p>
+<p>Things to note in the flow graph:<br>    - frequency –&gt; 433.92e6 for transmitting.<br>    - RF gain –&gt; 0<br>    - IF gain –&gt; 20 (IF gain affect the transmitter, 20 is roughly in the midpoint of maximum IF gain )<br><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c9.png" alt="power"><br><em>Figure 9: Time Sink</em><br>    - We should increase the power of transmission by amplifying the digital domain before converting it into the analog domain. As we can see in Figure 9 that the amplitude of the transmitting signal is fairly low compared to the captured signal. </p>
+<p>Heres a GIF of me testing the code for the first time.<br><img src="https://raw.githubusercontent.com/s34s0n/jam-replay-rf/master/image/c10.gif" alt="giff"></p>
+<p><em>I had included the this <a href="https://github.com/s34s0n/jam-replay-rf" target="_blank" rel="noopener">repo</a> which contain the files related to this project</em></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Bypassing-Rolling-Code-Systems"><span class="toc-number">1.</span> <span class="toc-text">Bypassing Rolling Code Systems</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Overview-of-Jam-and-Replay-Attack"><span class="toc-number">1.1.</span> <span class="toc-text">Overview of Jam and Replay Attack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Keyless-Entry-Systems"><span class="toc-number">1.2.</span> <span class="toc-text">Keyless Entry Systems</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Intro-to-RF-Hardware-amp-Software"><span class="toc-number">1.3.</span> <span class="toc-text">Quick Intro to RF Hardware &amp; Software</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Proof-of-Concept-device"><span class="toc-number">1.3.1.</span> <span class="toc-text">Proof-of-Concept device</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Initial-Reconnaissance"><span class="toc-number">1.4.</span> <span class="toc-text">Initial Reconnaissance</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Receiving-The-Signal"><span class="toc-number">1.4.1.</span> <span class="toc-text">Receiving The Signal</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Automated-Decoding"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">Automated Decoding</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-Rolling-Code-Work"><span class="toc-number">1.4.2.</span> <span class="toc-text">How Rolling Code Work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-do-we-attack-rolling-codes"><span class="toc-number">1.4.3.</span> <span class="toc-text">How do we attack rolling codes?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Executing-The-Attack"><span class="toc-number">1.5.</span> <span class="toc-text">Executing The Attack</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jam-and-Replay-Hardware"><span class="toc-number">1.5.1.</span> <span class="toc-text">Jam and Replay Hardware</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jamming-Signal"><span class="toc-number">1.5.2.</span> <span class="toc-text">Jamming Signal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Replaying-Signal"><span class="toc-number">1.5.3.</span> <span class="toc-text">Replaying Signal</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&text=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&is_video=false&description=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Jam and Replay Attacks on Vehicular Keyless Entry Systems&body=Check out this article: https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&title=Jam and Replay Attacks on Vehicular Keyless Entry Systems"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/&name=Jam and Replay Attacks on Vehicular Keyless Entry Systems&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Season Cherian
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-142416047-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 's34s0n-github-io';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
