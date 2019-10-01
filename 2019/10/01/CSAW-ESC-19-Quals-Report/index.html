@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Report on analyzing x86 binary using GHIDRA SRE Abstract - Brief Report on the methods used in analyzing the given binaries.  I. IntroductionIn this report, we will look at cracking a simple x86 binar">
+<meta name="keywords" content="RFID,CSAW_ESC_19,Reverse Engineering,Ghidra">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAW_ESC_19 Quals Report">
+<meta property="og:url" content="https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/index.html">
+<meta property="og:site_name" content="HandsOn Security">
+<meta property="og:description" content="Report on analyzing x86 binary using GHIDRA SRE Abstract - Brief Report on the methods used in analyzing the given binaries.  I. IntroductionIn this report, we will look at cracking a simple x86 binar">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/1.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/2.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/3.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/4.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/5.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/6.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/7.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/8.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/9.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/10.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/11.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/12.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/13.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/14.png">
+<meta property="og:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/15.png">
+<meta property="og:updated_time" content="2019-10-01T07:32:55.740Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSAW_ESC_19 Quals Report">
+<meta name="twitter:description" content="Report on analyzing x86 binary using GHIDRA SRE Abstract - Brief Report on the methods used in analyzing the given binaries.  I. IntroductionIn this report, we will look at cracking a simple x86 binar">
+<meta name="twitter:image" content="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>CSAW_ESC_19 Quals Report</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/07/18/Jam-and-Replay-Attacks-on-Vehicular-Keyless-Entry-Systems/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&text=CSAW_ESC_19 Quals Report"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&is_video=false&description=CSAW_ESC_19 Quals Report"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CSAW_ESC_19 Quals Report&body=Check out this article: https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&name=CSAW_ESC_19 Quals Report&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Report-on-analyzing-x86-binary-using-GHIDRA-SRE"><span class="toc-number">1.</span> <span class="toc-text">Report on analyzing x86 binary using GHIDRA SRE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#I-Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">I. Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-Initial-Analysis"><span class="toc-number">1.1.1.</span> <span class="toc-text">A. Initial Analysis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#II-Cracking-the-binary"><span class="toc-number">1.2.</span> <span class="toc-text">II. Cracking the binary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-Hex-Dump"><span class="toc-number">1.2.1.</span> <span class="toc-text">A. Hex Dump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Static-Analysis"><span class="toc-number">1.2.2.</span> <span class="toc-text">B. Static Analysis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Analysis-Function-List"><span class="toc-number">1.3.</span> <span class="toc-text">C. Analysis Function List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Patch-the-given-binary"><span class="toc-number">1.4.</span> <span class="toc-text">D. Patch the given binary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-Analyze-Strings"><span class="toc-number">1.5.</span> <span class="toc-text">E. Analyze Strings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusion"><span class="toc-number">1.6.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CSAW_ESC_19 Quals Report
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">HandsOn Security</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-09-30T23:13:56.000Z" itemprop="datePublished">2019-10-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/research/">research</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/CSAW-ESC-19/">CSAW_ESC_19</a>, <a class="tag-link" href="/tags/Ghidra/">Ghidra</a>, <a class="tag-link" href="/tags/RFID/">RFID</a>, <a class="tag-link" href="/tags/Reverse-Engineering/">Reverse Engineering</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Report-on-analyzing-x86-binary-using-GHIDRA-SRE"><a href="#Report-on-analyzing-x86-binary-using-GHIDRA-SRE" class="headerlink" title="Report on analyzing x86 binary using GHIDRA SRE"></a>Report on analyzing x86 binary using GHIDRA SRE</h1><blockquote>
+<p>Abstract - Brief Report on the methods used in analyzing the given binaries.</p>
+</blockquote>
+<h2 id="I-Introduction"><a href="#I-Introduction" class="headerlink" title="I. Introduction"></a>I. Introduction</h2><p>In this report, we will look at cracking a simple x86 binary <code>qualification.out</code> using reverse engineering tool Ghidra SRE.</p>
+<h3 id="A-Initial-Analysis"><a href="#A-Initial-Analysis" class="headerlink" title="A. Initial Analysis"></a>A. Initial Analysis</h3><p>Running  <code>./qualification.out</code> results in no output.</p>
+<p>Now we can move to reverse engineer the binary using Ghidra.</p>
+<p>When starting up <strong>Ghidra</strong>, a Project Manager window will pop up and the rest of the windows doesn’t matter.</p>
+<p>To create a new project :-<br>    - File –&gt; New Project –&gt; Non-Shared Project<br>Select the project directory and give our project a name. After that the project will be displayed in project manager.<br>To import the binary file either use the Import File option from File or just drag and drop the binary file to the Project manager.<br>This will bring up the import dialog, make sure that the format was detected correctly and the other binary information such as the architecture and the bit size was detected. For instance, you can change to an entirely different architecture. In this case of this binary we can move on with what the Ghidra detected and press OK to import the binary file.</p>
+<p>Once the import is done it will bring up the Import Result Summary, where you can see the number of functions, symbols, and other data. It will also show additional information where in this case <code>libc was not found and unresolved external symbols which remain: 2</code>. For analyzing this binary file, fixing this additional issues are not required and we can step forward. After that, we double click the imported binary and start the CodeBrowser.<br>The first thing the Code Browser will ask is whether to analyze the binary or not. If we choose to yes it will bring up Analysis Option.<br><img src alt="Alt text"><br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/1.png" alt="Alt text"><br>In here you can see Ghidra comes up with tons of analyzers, for example in ASCII String analyzer, that tries  to detect ASCII strings in your binary and there are other options like setting the length of strings but in this case, we leave the default as it is and the only extra analyzing option we choose is Decompiler Parameter ID as it often improves our decompilation results. Hit the analyze button you will see the progress of your element in CodeBrowser. On small binary like this, analysis is pretty fast but on a bigger one, you will wait for a couple of minutes.</p>
+<p>The main window in your CodeBrowser is called the Listing window, it contains your disassembling list and data. It can even list images and so on. When a function is selected in this window other elements will also get updated.</p>
+<p>The next important window is the Decompilation Window, where you will find the decompilation results for the function which has been selected.</p>
+<p>The Program Trees window contains the different sections from the binary, for example, the bss and data sections. Underneath it is the Symbol Tree window which contains Imports, Exports, Functions, Labels, Classes and Namespaces and underneath the Symbol Tree, there is Data Type Manager, where we can manage the data types and so on. There is also Console Window. Below the CodeBrowser, normally it contains the outputs of script.</p>
+<h2 id="II-Cracking-the-binary"><a href="#II-Cracking-the-binary" class="headerlink" title="II. Cracking the binary"></a>II. Cracking the binary</h2><h3 id="A-Hex-Dump"><a href="#A-Hex-Dump" class="headerlink" title="A. Hex Dump"></a>A. Hex Dump</h3><p><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/2.png" alt="Alt text"><br>Now we can start reverse-engineering the binary. Another important window is the Bytes Window, which is the hex dump of the binary, by enabling the ASCII view we where able to find the one of the flag  ‘&lt;<shhimhiding>&gt;’.    </shhimhiding></p>
+<h3 id="B-Static-Analysis"><a href="#B-Static-Analysis" class="headerlink" title="B. Static Analysis"></a>B. Static Analysis</h3><p><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/3.png" alt="Alt text"><br>We start by searching the main function in the Symbol Tree, which is the entry point in the binary. Selecting the function will bring up the Listing and Decompile Window. Decompiler tries to infer the signature of the main function so we can edit the main function signature to:- </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/4.png" alt="Alt text"><br>Now the types and names are taken over from over signature.  One problem was that the square bracket of the argv arguments was not treated as an array but instead as part of the function name. So we need to edit it again and change it into a pointer of a pointer.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/5.png" alt="Alt text"><br>This will clean up the decompilation result massively. So let’s start going through our decompilation line by line.</p>
+<blockquote>
+<p><strong>Note</strong>:
+Selecting anything in the decompiler window will also automatically select in the listing.</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (argc == <span class="number">2</span>) &#123;</span><br><span class="line">:</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>if</code> clause checks the number of arguments supplied to the program. Which means we need to supply one argument to the program when its executed. As one of the arguments, is the program name.</p>
+<blockquote>
+<p><strong>Note</strong>: 
+We can add comments over there by right-clicking at the required position and choose pre comment. </p>
+</blockquote>
+<p>Now we can see that inside <code>if</code> condition, a function is getting called named <code>challengeFunction()</code>. Double-Click on the function name in the Decompiler window will change the function from <code>main()</code> to <code>challengeFunction()</code>.
+<img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/6.png" alt="Alt text"><br>One of Ghidra’s functionality is that it can rename the variable names and and edit its data type in Decompile window. So after renaming the varivaribles and data types the Decompile window will look like following image.<br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/7.png" alt="Alt text"><br>Which makes the code easier to understand.<br>The python code for the above function would look like this.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">challengeFunction</span><span class="params">(s)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    Bool = <span class="literal">True</span></span><br><span class="line">    arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">while</span>( count &lt; <span class="number">8</span> ):</span><br><span class="line">        <span class="keyword">if</span>((ord(s[count])<span class="number">-0x30</span>)^<span class="number">3</span> != arr[count]):</span><br><span class="line">            Bool = <span class="literal">False</span></span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span>(Bool):</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Great Job! The flag is what you entered"</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    s = sys.argv[<span class="number">1</span>]</span><br><span class="line">    challengeFunction(s)</span><br></pre></td></tr></table></figure>
+
+<p>Now we can write a python script to find the required argument for the binary file for its to print<br><code>&quot;Great Job! The flag is what you entered&quot;</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">s = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> arr:</span><br><span class="line">    c = chr( ( i ^ <span class="number">3</span> ) + <span class="number">0x30</span> )</span><br><span class="line">    s += c</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> s</span><br></pre></td></tr></table></figure>
+
+<p>Hence the required argument for the binary file is <code>21212121</code>.</p>
+<h2 id="C-Analysis-Function-List"><a href="#C-Analysis-Function-List" class="headerlink" title="C. Analysis Function List"></a>C. Analysis Function List</h2><p>By analysing the different <code>function()</code> in the binary we can find a function named <code>secretFunction()</code>. 
+<img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/8.png" alt="Alt text"><br>From the decompilation table, it is clear that that the function just prints the string <code>&quot;The flag is &lt;&lt;shhimhiding&gt;&gt;&quot;</code>, which was already found using hexdump.</p>
+<h2 id="D-Patch-the-given-binary"><a href="#D-Patch-the-given-binary" class="headerlink" title="D. Patch the given binary"></a>D. Patch the given binary</h2><p>As seen before,  we know that the binary check for the correct argument to print one of the binary and one other function can be found from the <code>secretFunction()</code>. Ghidra allows to patch specific instruction, so that we can change the functionality of the binary. In this case it is possible to call the <code>secretFunction()</code>, which is not  getting called in the binary or patch the <code>challengeFunction()</code> so that any argument will result in successful outcomes.</p>
+<blockquote>
+<p><strong>Note</strong>:
+Issues :-<br>If you import an ELF binary with the format as Executable and Linking Format (ELF) and then export that binary, it creates a corrupted binary that segfaults due modified headers.<br>However, if you import it as “Raw binary” and manually select the language, then the exported file works as expected.</p>
+</blockquote>
+<p><strong>To Reproduce<br>**
+    - Steps to reproduce the behavior:<br>    - Import the qualification.out  ELF binary into your project (default settings).<br>    - Right-Click it and click Export…<br>    - Select Binary as the format.<br>    - Export it.<br>    - Make the exported binary executable.<br>    - Run the exported binary.<br>**Expected behavior</strong><br>The exported binary should work instead of segfaulting (happens with multiple binaries that I’ve tested).<br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/9.png" alt="Alt text"><br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/10.png" alt="Alt text"><br>At first we patch the call to challengeFunction() to secretFunction() so that once we run the binary we get the output as <code>The flag is &lt;&lt;shhimhiding&gt;&gt;</code>. 
+<img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/11.png" alt="Alt text"><br>For patching a particular instruction in Ghidra, right-click and select patch instruction. In this case we just need to change the function address to the address of <code>secretFunction()</code> and remove the argument check. After patching the code we need to export the modified code as binary.<br>We can also patch the <code>challengeFunction()</code>, so that for any input the binary print the success message. So doing this particular task patching the JNZ instruction in the <code>challengeFunction()</code> to JMP is only required.<br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/12.png" alt="Alt text"><br>After exporting the both the binary, when we execute them we get output as follows:<br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/13.png" alt="Alt text"></p>
+<h2 id="E-Analyze-Strings"><a href="#E-Analyze-Strings" class="headerlink" title="E. Analyze Strings"></a>E. Analyze Strings</h2><p>In Ghidra, there is a functionality Search for Strings. Once we select this option a pop up window will appear.<br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/14.png" alt="Alt text"><br>Providing the correct argument we can search for all the referential strings in the binary.<br><img src="https://gitlab.com/s34s0n/keep/raw/master/images/csaw_19/15.png" alt="Alt text"><br>From this window we can find the location of the flags as we were able to find two strings which turn out to be interesting.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>The binary can be reverse-engineered and exploited in a variety of ways, which is illustrated using the methods given above. </p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Report-on-analyzing-x86-binary-using-GHIDRA-SRE"><span class="toc-number">1.</span> <span class="toc-text">Report on analyzing x86 binary using GHIDRA SRE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#I-Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">I. Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-Initial-Analysis"><span class="toc-number">1.1.1.</span> <span class="toc-text">A. Initial Analysis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#II-Cracking-the-binary"><span class="toc-number">1.2.</span> <span class="toc-text">II. Cracking the binary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-Hex-Dump"><span class="toc-number">1.2.1.</span> <span class="toc-text">A. Hex Dump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Static-Analysis"><span class="toc-number">1.2.2.</span> <span class="toc-text">B. Static Analysis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Analysis-Function-List"><span class="toc-number">1.3.</span> <span class="toc-text">C. Analysis Function List</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Patch-the-given-binary"><span class="toc-number">1.4.</span> <span class="toc-text">D. Patch the given binary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-Analyze-Strings"><span class="toc-number">1.5.</span> <span class="toc-text">E. Analyze Strings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusion"><span class="toc-number">1.6.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&text=CSAW_ESC_19 Quals Report"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&is_video=false&description=CSAW_ESC_19 Quals Report"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CSAW_ESC_19 Quals Report&body=Check out this article: https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&title=CSAW_ESC_19 Quals Report"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://s34s0n.github.io/2019/10/01/CSAW-ESC-19-Quals-Report/&name=CSAW_ESC_19 Quals Report&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Season Cherian
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/s34s0n">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-142416047-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 's34s0n-github-io';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
